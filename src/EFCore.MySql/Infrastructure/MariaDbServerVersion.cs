@@ -73,6 +73,16 @@ namespace Microsoft.EntityFrameworkCore
             public override bool SpatialSupportFunctionAdditions => false;
             public override bool SpatialSetSridFunction => false;
             public override bool SpatialDistanceFunctionImplementsAndoyer => false;
+            public override bool SpatialDistanceSphereFunction => ServerVersion.Version >= new Version(10, 5, 10)
+                                                                  || (
+                                                                    ServerVersion.Version.Major == 10
+                                                                    && (
+                                                                        (ServerVersion.Version.Minor == 4 && ServerVersion.Version.Build >= 19)
+                                                                        || (ServerVersion.Version.Minor == 3 && ServerVersion.Version.Build >= 29)
+                                                                        || (ServerVersion.Version.Minor == 2 && ServerVersion.Version.Build >= 38)
+                                                                    )
+                                                                  )
+                                                                  ; // https://mariadb.com/kb/en/st_distance_sphere/
             public override bool SpatialGeographic => false;
             public override bool ExceptIntercept => ServerVersion.Version >= new Version(10, 3, 0);
             public override bool ExceptInterceptPrecedence => ServerVersion.Version >= new Version(10, 4, 0);
